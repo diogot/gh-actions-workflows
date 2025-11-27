@@ -31,6 +31,7 @@ Create a GitHub release using the native `gh` CLI. A secure alternative to third
 | `draft` | no | `false` | Create as draft |
 | `prerelease` | no | `false` | Mark as prerelease |
 | `latest` | no | `true` | Mark as latest release |
+| `token` | no | `${{ github.token }}` | GitHub token for authentication |
 
 #### Examples
 

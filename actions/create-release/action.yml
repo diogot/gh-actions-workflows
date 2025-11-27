@@ -30,6 +30,10 @@ inputs:
     description: 'Mark as latest'
     required: false
     default: 'true'
+  token:
+    description: 'GitHub token for authentication'
+    required: false
+    default: ${{ github.token }}
 
 runs:
   using: 'composite'
@@ -37,7 +41,7 @@ runs:
     - name: Create Release
       shell: bash
       env:
-        GH_TOKEN: ${{ github.token }}
+        GH_TOKEN: ${{ inputs.token }}
       run: |
         ARGS=("${{ inputs.tag }}")
 
