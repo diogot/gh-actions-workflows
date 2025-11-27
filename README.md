@@ -13,6 +13,7 @@ Create a GitHub release using the native `gh` CLI. A secure alternative to third
 ```yaml
 - uses: diogot/gh-actions-workflows/actions/create-release@main
   with:
+    token: ${{ secrets.GITHUB_TOKEN }}
     body-file: release_notes.md
     files: |
       dist/*.tar.gz
@@ -31,7 +32,7 @@ Create a GitHub release using the native `gh` CLI. A secure alternative to third
 | `draft` | no | `false` | Create as draft |
 | `prerelease` | no | `false` | Mark as prerelease |
 | `latest` | no | `true` | Mark as latest release |
-| `token` | no | `${{ github.token }}` | GitHub token for authentication |
+| `token` | **yes** | | GitHub token for authentication |
 
 #### Examples
 
@@ -40,6 +41,7 @@ Create a GitHub release using the native `gh` CLI. A secure alternative to third
 ```yaml
 - uses: diogot/gh-actions-workflows/actions/create-release@main
   with:
+    token: ${{ secrets.GITHUB_TOKEN }}
     body-file: CHANGELOG.md
 ```
 
@@ -48,6 +50,7 @@ Create a GitHub release using the native `gh` CLI. A secure alternative to third
 ```yaml
 - uses: diogot/gh-actions-workflows/actions/create-release@main
   with:
+    token: ${{ secrets.GITHUB_TOKEN }}
     body: |
       ## What's New
       - Feature A
@@ -59,6 +62,7 @@ Create a GitHub release using the native `gh` CLI. A secure alternative to third
 ```yaml
 - uses: diogot/gh-actions-workflows/actions/create-release@main
   with:
+    token: ${{ secrets.GITHUB_TOKEN }}
     body-file: release_notes.md
     files: |
       dist/*.tar.gz
@@ -70,6 +74,7 @@ Create a GitHub release using the native `gh` CLI. A secure alternative to third
 ```yaml
 - uses: diogot/gh-actions-workflows/actions/create-release@main
   with:
+    token: ${{ secrets.GITHUB_TOKEN }}
     body-file: release_notes.md
     draft: true
     prerelease: true
@@ -77,7 +82,7 @@ Create a GitHub release using the native `gh` CLI. A secure alternative to third
 
 #### Permissions
 
-The action uses `${{ github.token }}` which requires:
+The workflow requires write access to create releases:
 
 ```yaml
 permissions:

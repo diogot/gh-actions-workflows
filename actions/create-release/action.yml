@@ -32,8 +32,7 @@ inputs:
     default: 'true'
   token:
     description: 'GitHub token for authentication'
-    required: false
-    default: ${{ github.token }}
+    required: true
 
 runs:
   using: 'composite'
