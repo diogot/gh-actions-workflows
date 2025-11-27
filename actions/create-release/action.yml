@@ -1,0 +1,74 @@
+name: 'Create Release'
+description: 'Create a GitHub release using gh CLI'
+
+inputs:
+  tag:
+    description: 'Tag name'
+    required: false
+    default: ${{ github.ref_name }}
+  title:
+    description: 'Release title'
+    required: false
+  body:
+    description: 'Release notes (inline)'
+    required: false
+  body-file:
+    description: 'Path to release notes file'
+    required: false
+  files:
+    description: 'Assets to upload (newline-separated globs)'
+    required: false
+  draft:
+    description: 'Create as draft'
+    required: false
+    default: 'false'
+  prerelease:
+    description: 'Mark as prerelease'
+    required: false
+    default: 'false'
+  latest:
+    description: 'Mark as latest'
+    required: false
+    default: 'true'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Create Release
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        ARGS=("${{ inputs.tag }}")
+
+        # Title
+        if [[ -n "${{ inputs.title }}" ]]; then
+          ARGS+=(--title "${{ inputs.title }}")
+        fi
+
+        # Body
+        if [[ -n "${{ inputs.body-file }}" ]]; then
+          ARGS+=(--notes-file "${{ inputs.body-file }}")
+        elif [[ -n "${{ inputs.body }}" ]]; then
+          ARGS+=(--notes "${{ inputs.body }}")
+        fi
+
+        # Flags
+        if [[ "${{ inputs.draft }}" == "true" ]]; then
+          ARGS+=(--draft)
+        fi
+        if [[ "${{ inputs.prerelease }}" == "true" ]]; then
+          ARGS+=(--prerelease)
+        fi
+        if [[ "${{ inputs.latest }}" == "false" ]]; then
+          ARGS+=(--latest=false)
+        fi
+
+        # Files
+        if [[ -n "${{ inputs.files }}" ]]; then
+          while IFS= read -r pattern; do
+            [[ -n "$pattern" ]] && ARGS+=($pattern)
+          done <<< "${{ inputs.files }}"
+        fi
+
+        gh release create "${ARGS[@]}"
